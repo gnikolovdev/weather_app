@@ -1,3 +1,5 @@
+@use "../src/assets/styles/sass/mixins.scss" as mixin;
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -35,6 +37,8 @@
 
 .card {
   padding: 2em;
+  
+  background-color: $cart-bg-color;
 }
 
 .read-the-docs {
