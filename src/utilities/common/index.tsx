@@ -70,7 +70,7 @@ export type TGetPosition = Promise<TPosition | null>;
 
 const getPosition = async (): TGetPosition => {
     const positionItem = await localforage.getItem(POSITION_ITEM_KEY) as TPositionItem;
-    console.log("get position", positionItem)
+    
     if(positionItem && positionItem.expire > Date.now()) {
         return positionItem.position;
     }
@@ -142,17 +142,17 @@ export async function get5DaysWeatherMap({ unit, position } : TWeatherQueries){
 }
 
 function groupWeatherByDay(list: ThreeHourResponse['list']): TWeatherMapByDay {
-    console.log("dataLIst", list)
+    
     const days = new Map(); //use Map as need we to maintain insertion order
     list.forEach( (w) => {
         const day = getDateTime({ dt_txt: w.dt_txt }).toFormat('dd/MM/yyyy');
         if( !days.get(day) ) {
-            console.log("day", day)
+            
             days.set(day, []);
         }
       
         days.get(day).push(w);
     })
-    console.log("days", days);
+    
     return days;
   }

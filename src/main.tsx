@@ -11,16 +11,16 @@ import App, {
 
 
 import { QueryClient } from '@tanstack/react-query';
-import ErrorPage from '@components/pages/ErrorPage';
-import ForecastByDays, { loader as forecastByDaysLoader } from '@components/pages/ForecastByDays';
-import ForecastByHours from '@components/pages/ForeCastByHours';
+import ErrorPage from '@pages/ErrorPage';
+import ForecastByDays, { loader as forecastByDaysLoader } from '@pages/ForecastByDays';
+import ForecastByHours from '@pages/ForeCastByHours';
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App queryClient={queryClient} />,
+    element: <App />,
     loader: AppLoader,
     action: AppAction,
     errorElement: <ErrorPage />,

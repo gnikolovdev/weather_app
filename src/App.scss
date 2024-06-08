@@ -4,10 +4,6 @@
   flex-direction: column;
 }
 
-.content {
-  font-size: inherit;
-}
-
 .app{
   &__content{
     @include content;

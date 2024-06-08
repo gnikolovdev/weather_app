@@ -1,14 +1,10 @@
 import { Unit } from 'openweathermap-ts/dist/types';
 import { TPosition } from '@utilities/common';
 import { 
-    Children, 
-    SetStateAction, 
-    useContext, 
     createContext,
     useState,
     useEffect
 } from 'react';
-import { localDB } from '@utilities/common';
 
 export type TGlobalContext = {
     unit: Unit,
@@ -43,7 +39,7 @@ export function GlobalContextProvider({
         setPosition(position)
     }, [position]);
 
-    console.log('unit from provider', unit);
+    
 
     return (
         <GlobalContext.Provider value={{

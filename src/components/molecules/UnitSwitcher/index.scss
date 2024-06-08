@@ -1,0 +1,25 @@
+.unit-switcher {
+    display: flex;              
+    align-items: center;
+
+    &__button {
+        display: inline;
+        font-size: 0.9rem;
+        font-weight: bold;
+        border-width: 0;
+        background-color: transparent;                
+        text-decoration: line-through;
+        cursor: pointer;
+        color: $color-orange-gold;
+
+        @include tablet {
+            font-size: 1.2rem;
+        }
+
+        &--active {                    
+            text-decoration: none;
+            color: white;
+            cursor: default;                
+        }
+    }        
+}
