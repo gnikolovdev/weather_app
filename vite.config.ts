@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      "@contexts" : "/src/contexts",
       "@components": "/src/components",
       "@pages": "/src/pages",
       "@utilities": "/src/utilities",
@@ -17,7 +18,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         implementation: sass,
-        additionalData: '@use "./src/assets/styles/sass/Variables.scss" as *;'
+        additionalData: '@use "./src/assets/styles/sass/index.scss" as *;'
       },
     },
   },

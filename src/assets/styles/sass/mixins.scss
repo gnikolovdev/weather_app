@@ -1,11 +1,41 @@
+@use './variables.scss' as *;
+
+@mixin phone {
+    @media only screen and (max-width: $size_MD) {
+        @content;
+    }
+}
+
 @mixin tablet {
-    @media only screen and (min-width: 768px) {
+    @media only screen and (min-width: $size_MD) {
         @content;
     }
 }
 
 @mixin desktop {
-    @media only screen and (min-width: 992px) {
+    @media only screen and (min-width: $size_LG) {
         @content;
     }
+}
+
+@mixin content-width {
+    margin-inline: auto;
+    width: $content-width-to-LG;
+    @include desktop {
+        width: $content-width-LG;        
+    }
+}
+
+@mixin content {
+    padding: 20px;
+
+    @include content-width();
+}
+
+@mixin title {
+    margin-bottom: 20px;
+}
+
+@mixin center-verticaly {
+    margin-block: auto;
 }

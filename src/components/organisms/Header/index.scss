@@ -1,0 +1,57 @@
+.header {
+    position:fixed;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: $header-height;
+    color: white;
+    background-color: #808080;
+
+    &__relative-placeholder {
+        width: 100%;
+        height: $header-height;
+    }
+    
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @include content;
+    }
+
+    &__title {
+        color: white;
+        font-size: 1.8rem;
+        @include tablet {
+            font-size: 2rem;
+        }
+    }
+
+     &__form {
+        display: flex;              
+        align-items: center;
+
+        &-button {
+            display: inline;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-width: 0;
+            background-color: transparent;                
+            text-decoration: line-through;
+            cursor: pointer;
+            color: $color-orange-gold;
+
+            @include tablet {
+                font-size: 1.2rem;
+            }
+
+            &--active {                    
+                text-decoration: none;
+                color: white;
+                cursor: default;                
+            }
+        }        
+    }
+    
+}
