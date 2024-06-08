@@ -28,21 +28,21 @@ export default function UnitSwitcher({
 
     return (
         <Form className="unit-switcher" method="POST">
-                <button 
-                  type="submit"
-                  value={UnitValues.Metric}
-                  name="unit" 
-                  className={buttonStyles({active: isActive(UnitValues.Metric)})}>
-                    Celsius
-                </button>
-                <span>|</span>
-                <button  
-                  type="submit"
-                  value={UnitValues.Imperial}
-                  name="unit"  
-                  className={buttonStyles({active: isActive(UnitValues.Imperial)})}>
-                    Fahrenheit
-                </button>
-              </Form>
+            <button 
+              type="submit"
+              value={UnitValues.Metric}
+              name="unit" 
+              className={buttonStyles({active: isActive(UnitValues.Metric)})}>
+                Celsius
+            </button>
+            <span>|</span>
+            <button  
+              type="submit"
+              value={UnitValues.Imperial}
+              name="unit"  
+              className={buttonStyles({active: isActive(UnitValues.Imperial)})}>
+                Fahrenheit
+            </button>
+          </Form>
     )
 }

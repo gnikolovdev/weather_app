@@ -6,13 +6,14 @@ import {
     useEffect
 } from 'react';
 
+export type TGlobalContextPosition = TPosition | null;
+
 export type TGlobalContext = {
     unit: Unit,
     //setUnit: React.Dispatch<SetStateAction<Unit>>
     position: TGlobalContextPosition
 }
 
-export type TGlobalContextPosition = TPosition | null;
 
 export const GlobalContext = createContext<TGlobalContext | null>(null);
 
