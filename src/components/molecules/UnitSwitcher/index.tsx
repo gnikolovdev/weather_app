@@ -1,4 +1,4 @@
-import { Form } from "react-router-dom";
+import { Form, useLocation } from "react-router-dom";
 import { UnitValues } from "@utilities/common";
 
 import { cva } from "cva";
@@ -17,17 +17,24 @@ type TUnitSwitcher = {
     unit: Unit
 }
 
+/**
+ * Component which provide ability to switch mesurement unit
+ * 
+ * @param {Unit} unit Current unit of mesurement
+ * 
+ * @returns {ReactNode} React component
+ */
 export default function UnitSwitcher({
     unit    
 }: TUnitSwitcher){
-
+    const location = useLocation();
+    const locationString = location.pathname + location.search + location.hash;
     const isActive = (btnUnitVal: UnitValues): boolean => {
         if(btnUnitVal === unit) return true;
         else return false;
     }
-
     return (
-        <Form className="unit-switcher" method="POST">
+        <Form className="unit-switcher" method="POST" action={locationString}>
             <button 
               type="submit"
               value={UnitValues.Metric}

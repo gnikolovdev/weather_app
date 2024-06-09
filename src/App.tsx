@@ -14,6 +14,12 @@ type TLoader = {
   positionCached: TPosition
   unit: Unit
 }
+
+/**
+ * loader for app page component
+ * 
+ * @returns {TLoader}
+ */
 export async function loader() {
   if(!isUserLocationSupported()) {
     throw new Error('Your device do not support geolocation');
@@ -28,7 +34,11 @@ export async function loader() {
   });
 }
 
-
+/**
+ * action for app page component
+ * 
+ * @returns {TLoader}
+ */
 export async function action( { request } : { request : Request}) {
   let formData = await request.formData();
   let unit = formData.get("unit") as Unit;
@@ -42,6 +52,13 @@ export async function action( { request } : { request : Request}) {
   return {ok: true};
 }
 
+
+/**
+ * 
+ * component which is shown while waiting for position
+ * 
+ * @returns {ReactNode}
+ */
 function PositionLoading() {
   return (
     <div className="app__content">
@@ -52,6 +69,12 @@ function PositionLoading() {
   );
 }
 
+/**
+ * 
+ * component which triggeres revalidation when position is loaded
+ * 
+ * @returns {ReactNode}
+ */
 function PostionLoaded({ position }: {position: GeolocationPosition}) {
   const revalidator = useRevalidator();
   const positionParam = {lat: position.coords.latitude, lon: position.coords.longitude};
@@ -65,6 +88,13 @@ function PostionLoaded({ position }: {position: GeolocationPosition}) {
   return <PositionLoading />;
 }
 
+/**
+ * 
+ * component which awaits for position
+ * shown from first load of page
+ * 
+ * @returns {ReactNode}
+ */
 function AwaitPositionData({position}: { position: Promise<GeolocationPosition> }) {
   return (
     <React.Suspense
@@ -81,12 +111,18 @@ function AwaitPositionData({position}: { position: Promise<GeolocationPosition> 
   )
 }
 
+/**
+ * 
+ * Layout component for the app
+ * 
+ * @returns {ReactNode}
+ */
 export default function App() {
     const { unit, position, positionCached } = useLoaderData() as TLoader;
     
     return (
       <GlobalContextProvider unit={unit} position={positionCached}>
-        <Header><></></Header>             
+        <Header></Header>
           {positionCached === null && <AwaitPositionData position={position} />}
           {positionCached !== null && <Outlet />}
         <Footer />

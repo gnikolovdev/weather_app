@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { useLoaderData, defer, Await, useAsyncValue } from "react-router-dom"
 import { 
     TWeatherMapByDay, 
     fiveDaysWeatherMapQuery,
-    localDB
+    currenWeatherMapQuery,
+    localDB,
+    fixMS,
+    getDateTime
 } from "@utilities/common";
 import { QueryClient } from "@tanstack/react-query";
 import './index.scss';
 import LoadingAnimation from "@components/atoms/LoadingAnimation";
 import DayCard from '@components/molecules/DayCard';
+import { CurrentResponse } from 'openweathermap-ts/dist/types';
+import { DateTime } from 'luxon';
+import { GlobalContext, TGlobalContext } from '@contexts/GlobalContextProvider';
 
 export type TDataLoader = {
     haveData: boolean,
     cachedForecast: TWeatherMapByDay | undefined,
-    lazyForecast: Promise<TWeatherMapByDay>
-    
+    lazyForecast: Promise<TWeatherMapByDay> | null,
+    cachedCurrent: CurrentResponse | undefined,
+    lazyCurrent: Promise<CurrentResponse> | null 
 }
 
+
+/**
+ * Forecast page loader - make requests for forecast data
+ * 
+ * @param {QueryClient} queryClient which makes requests 
+ * @returns {TDataLoader}
+ */
 export async function loader({queryClient} : {queryClient: QueryClient}) {
     
     const unit = await localDB.getUnit();
@@ -26,36 +40,58 @@ export async function loader({queryClient} : {queryClient: QueryClient}) {
     if(position !== null) {
         
         const query = fiveDaysWeatherMapQuery({ unit, position });
-        //const queryCurrent = currenWeatherMapQuery({ unit, position });
-        //const data = queryClient.getQueryData(queryCurrent.queryKey) ?? (await queryClient.fetchQuery(queryCurrent));
+        const queryCurrent = currenWeatherMapQuery({ unit, position });
+        const cachedCurrent = queryClient.getQueryData(queryCurrent.queryKey);
+        const cachedForecast = queryClient.getQueryData(query.queryKey);
         return defer({
             haveData: true,
-            lazyForecast: queryClient.fetchQuery(query),
-            cachedForecast: queryClient.getQueryData(query.queryKey)
+            cachedForecast: cachedForecast,
+            lazyForecast: cachedForecast ? null : queryClient.fetchQuery(query),
+            cachedCurrent: cachedCurrent,
+            lazyCurrent: cachedCurrent ? null : queryClient.fetchQuery(queryCurrent),
         })
     } else {
         
         return {
             haveData: false,
-            deferQueries: null
+            cachedForecast: null,
+            lazyForecast: null,
+            cachedCurrent: null,
+            lazyCurrent: null
         }
     }
 }
 
+
+/**
+ * Create content for page - e.g. cards for days
+ * 
+ * @param {Object} props forecast data
+ * 
+ * @param {TWeatherMapByDay} props.data forecast data grouped by days
+ * 
+ * @returns {TDataLoader}
+ */
 function ForecastByDaysContent ({data} : {data: TWeatherMapByDay}) {
-    const nextDaysArray = Array.from(data.entries());  
-    
-    if(nextDaysArray.length > 5) nextDaysArray.pop();  
+    let nextDaysArray = Array.from(data.entries());
+    const firsDayDate = getDateTime({dt: nextDaysArray[0][1][0].dt});
+
+    // forecast returns 3 hours response starting from next 3 hours
+    // so it is possible to not return data for current day
+    // if current time is different from GMT
+    if(firsDayDate.day !== DateTime.now().day) {
+        nextDaysArray = nextDaysArray.slice(0, 4);
+    } else {
+        nextDaysArray = nextDaysArray.slice(1, 5);
+    }
+     
     const listItems = nextDaysArray.map((day, index) => {
-        if(index === 0)
-            return <DayCard day={day[1][0]} index={index} />
-        else 
-            return <DayCard day={day[1][5]} index={index} />
+        return <DayCard day={day[1][5]} index={index + 1} />
     });
     return (
-        <div className="forecast5__days-container">
+        <>
             {listItems}
-        </div>
+        </>
     )
 }
 
@@ -65,21 +101,65 @@ function ForecastByDaysAwaitedData () {
     return <ForecastByDaysContent data={nextDaysMap} />
 }
 
+/**
+ * Create content for page - e.g. cards for days
+ * 
+ * @param {Object} props forecast data
+ * 
+ * @param {TWeatherMapByDay} props.data forecast data grouped by days
+ * 
+ * @returns {TDataLoader}
+ */
+function CurrentDayContent ({data} : {data: CurrentResponse}) {
+    const { setCurrentWeather } = useContext(GlobalContext) as TGlobalContext;
+    useEffect(() => {
+        setCurrentWeather(data.weather[0]);
+    }, [data.weather[0]]);
+    return <DayCard day={data} index={0} />
+}
+
+
+function CurrentAwaitedData () {
+    const currentDayData = useAsyncValue() as CurrentResponse;
+    
+    return <CurrentDayContent data={currentDayData} />
+}
+
+
+/**
+ * Page which shows 5 day weather forecast
+ * 
+ * @returns {ReactNode}
+ */
 export default function ForecastByDays() {
     
-    const { cachedForecast, haveData, lazyForecast } = useLoaderData() as TDataLoader;
+    const { 
+        haveData, 
+        cachedForecast, 
+        lazyForecast,
+        cachedCurrent,
+        lazyCurrent 
+    } = useLoaderData() as TDataLoader;
     
     return (
         <div className="forecast5">
             <h2 className="forecast5__title">
                 Forecast by days:
             </h2>
-           {haveData && !cachedForecast && <React.Suspense fallback={<LoadingAnimation />}>
-                <Await resolve={lazyForecast}>
-                    <ForecastByDaysAwaitedData />
-                </Await>
-            </React.Suspense>}
-            {haveData && cachedForecast && <ForecastByDaysContent data={cachedForecast} />}
+            <div className="forecast5__days-container">
+                {haveData && !cachedCurrent && <React.Suspense fallback={<LoadingAnimation />}>
+                    <Await resolve={lazyCurrent}>
+                        <CurrentAwaitedData />
+                    </Await>
+                </React.Suspense>}
+                {haveData && cachedCurrent && <CurrentDayContent data={cachedCurrent} />}
+                {haveData && !cachedForecast && <React.Suspense fallback={<LoadingAnimation />}>
+                    <Await resolve={lazyForecast}>
+                        <ForecastByDaysAwaitedData />
+                    </Await>
+                </React.Suspense>}
+                {haveData && cachedForecast && <ForecastByDaysContent data={cachedForecast} />}
+            </div>
         </div>
     )
     

@@ -3,6 +3,11 @@ import './index.scss';
 import { HeaderError } from "@components/organisms/Header";
 import Footer from "@components/organisms/Footer";
 
+/**
+ * Error page for the app
+ * 
+ * @returns {ReactNode}
+ */
 export default function ErrorPage() {
   const error: any = useRouteError();
   console.error(error);

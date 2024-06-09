@@ -32,6 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/day/:dayId",
+        action: AppAction,
         loader: () => { return forecastByDaysLoader( { queryClient }); },
         element: <ForecastByHours />,
       },

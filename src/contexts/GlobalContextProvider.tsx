@@ -1,17 +1,20 @@
-import { Unit } from 'openweathermap-ts/dist/types';
+import { CurrentResponse, Unit } from 'openweathermap-ts/dist/types';
 import { TPosition } from '@utilities/common';
 import { 
     createContext,
     useState,
-    useEffect
+    useEffect,
+    SetStateAction
 } from 'react';
+import { TIconData } from '@components/atoms/WeatherIcon';
 
 export type TGlobalContextPosition = TPosition | null;
 
 export type TGlobalContext = {
     unit: Unit,
-    //setUnit: React.Dispatch<SetStateAction<Unit>>
     position: TGlobalContextPosition
+    currentWeather: TIconData | null,
+    setCurrentWeather: React.Dispatch<SetStateAction<TIconData | null>>
 }
 
 
@@ -23,6 +26,18 @@ export type TGlobalContextProvider = {
     position: TPosition
 }
 
+/**
+ * Provide Context for App which contains position and unit data
+ * @param {ReactNode} children
+ * 
+ * @param {Object} properties
+ * 
+ * @param {Unit} properties.unit Current Unit
+ * 
+ * @param {TPosition} properties.position Current position
+ * 
+ * @returns {ReactNode}
+ */
 export function GlobalContextProvider({ 
     children, 
     unit: firstUnit,
@@ -31,6 +46,7 @@ export function GlobalContextProvider({
 
     const [ unit, setUnit ] = useState<Unit>(firstUnit);
     const [ position, setPosition ] = useState<TGlobalContextPosition>(firstPosition);
+    const [ currentWeather, setCurrentWeather ] = useState<TIconData | null>(null);
 
     useEffect(() => {
         setUnit(firstUnit)
@@ -45,7 +61,9 @@ export function GlobalContextProvider({
     return (
         <GlobalContext.Provider value={{
             unit,
-            position
+            position,
+            currentWeather,
+            setCurrentWeather
         }}>
             {children}
         </GlobalContext.Provider>

@@ -3,8 +3,17 @@ import { getDateTime, UnitValues } from "@utilities/common";
 import WeatherIcon from "@components/atoms/WeatherIcon";
 import './index.scss';
 
+/**
+ * Component which displays hour data
+ * 
+ * @param {object} day Day data
+ * 
+ * @param {Unit} unit Current unit of mesurement
+ * 
+ * @returns {ReactNode} React component
+ */
 export default function HourCard({ hour, unit } : { hour: ThreeHourResponse['list'][0], unit: Unit }) {
-    const date = getDateTime({ dt_txt: hour.dt_txt });
+    const date = getDateTime({ dt: hour.dt });
 
     return (
         <div className='hour-card'>
@@ -12,7 +21,7 @@ export default function HourCard({ hour, unit } : { hour: ThreeHourResponse['lis
                 {date.toFormat('HH:mm a')}
             </div>
             <div className='hour-card__icon'>
-                <WeatherIcon data={hour} className="img" />
+                <WeatherIcon data={hour.weather[0]} className="img" />
             </div>
             <div className='hour-card__temp'>
                 {Math.round(hour.main.temp)}&deg;
