@@ -4,9 +4,9 @@ Application shows weather data for 5 days
 
 ## How to start application localy
 
-clone repository
+- clone repository
 
-and then run
+- and then run
 
 ```
   npm install
@@ -19,10 +19,10 @@ and then run
   npm run storybook
 ```
 
-### How to deploy
+## How to deploy
 
-copy content from 'dist' folder after you run
+- copy content from 'dist' folder after you run
 
 ```
-npm run build
+  npm run build
 ```

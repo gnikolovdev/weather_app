@@ -12,7 +12,7 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-export const TodayOrTomorrow: Story = {
+export const WeekDayRelativeName: Story = {
 args: {
     day: dayData,
     index: 0
