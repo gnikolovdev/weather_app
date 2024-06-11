@@ -6,7 +6,7 @@
 
 .app{
   &__content{
-    @include content;
+    @include  content;
     @include center-verticaly;
   }
 }
