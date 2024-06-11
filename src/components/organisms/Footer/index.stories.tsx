@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import Footer from './index';
+import Footer from "./index";
 
 const meta = {
     title: "weather app/organisms/Footer",
     component: Footer,
-    tags: ['autodocs'],
+    tags: ["autodocs"],
 } satisfies Meta<typeof Footer>;
 
 export default meta;

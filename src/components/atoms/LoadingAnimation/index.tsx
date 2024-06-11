@@ -1,5 +1,5 @@
 
-import './index.scss';
+import "./index.scss";
 
 /** 
     component renders loading animation

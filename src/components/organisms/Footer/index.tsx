@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import './index.scss';
+import "./index.scss";
 
 /**
  * Component which represents footer

@@ -3,7 +3,7 @@ import { UnitValues } from "@utilities/common";
 
 import { cva } from "cva";
 import { Unit } from "openweathermap-ts/dist/types";
-import './index.scss';
+import "./index.scss";
 
 const buttonStyles = cva("unit-switcher__button", {
   variants: {

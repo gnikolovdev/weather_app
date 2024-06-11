@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from "react"
+import ReactDOM from "react-dom/client"
 import {
   createBrowserRouter,
   RouterProvider,
@@ -10,10 +10,10 @@ import App, {
 } from "./App";
 
 
-import { QueryClient } from '@tanstack/react-query';
-import ErrorPage from '@pages/ErrorPage';
-import ForecastByDays, { loader as forecastByDaysLoader } from '@pages/ForecastByDays';
-import ForecastByHours from '@pages/ForeCastByHours';
+import { QueryClient } from "@tanstack/react-query";
+import ErrorPage from "@pages/ErrorPage";
+import ForecastByDays, { loader as forecastByDaysLoader } from "@pages/ForecastByDays";
+import ForecastByHours from "@pages/ForeCastByHours";
 
 const queryClient = new QueryClient();
 

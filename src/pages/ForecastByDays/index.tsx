@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from "react";
 
 import { useLoaderData, defer, Await, useAsyncValue } from "react-router-dom"
 import { 
@@ -10,12 +10,12 @@ import {
     getDateTime
 } from "@utilities/common";
 import { QueryClient } from "@tanstack/react-query";
-import './index.scss';
+import "./index.scss";
 import LoadingAnimation from "@components/atoms/LoadingAnimation";
-import DayCard from '@components/molecules/DayCard';
-import { CurrentResponse } from 'openweathermap-ts/dist/types';
-import { DateTime } from 'luxon';
-import { GlobalContext, TGlobalContext } from '@contexts/GlobalContextProvider';
+import DayCard from "@components/molecules/DayCard";
+import { CurrentResponse } from "openweathermap-ts/dist/types";
+import { DateTime } from "luxon";
+import { GlobalContext, TGlobalContext } from "@contexts/GlobalContextProvider";
 
 export type TDataLoader = {
     haveData: boolean,

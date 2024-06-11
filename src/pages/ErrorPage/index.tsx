@@ -1,5 +1,5 @@
 import { useRouteError } from "react-router-dom";
-import './index.scss';
+import "./index.scss";
 import { HeaderError } from "@components/organisms/Header";
 import Footer from "@components/organisms/Footer";
 

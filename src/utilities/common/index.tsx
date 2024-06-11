@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import OpenWeatherMap from 'openweathermap-ts';
+import OpenWeatherMap from "openweathermap-ts";
 import { CurrentResponse, ThreeHourResponse, Unit } from "openweathermap-ts/dist/types";
 import localforage from "localforage";
 
@@ -43,9 +43,9 @@ export async function getUserLocation(): Promise<GeolocationPosition> {
  * @returns {enum}
  */
 export enum UnitValues {
-    Metric = 'metric',
-    Imperial = 'imperial',
-    Standart = 'standart'
+    Metric = "metric",
+    Imperial = "imperial",
+    Standart = "standart"
 }
 
 export type TUnitValuesUnion = `${UnitValues}`;
@@ -58,7 +58,7 @@ export type TUnitValuesUnion = `${UnitValues}`;
  * @returns {Promise<Unit>}
  */
 const getUnit = async (): Promise<Unit> => {
-    return await localforage.getItem('unit') || UnitValues.Metric;
+    return await localforage.getItem("unit") || UnitValues.Metric;
 }
 
 
@@ -69,11 +69,11 @@ const getUnit = async (): Promise<Unit> => {
  * @returns {Promise<Unit>}
  */
 const setUnit = async (unit: Unit): Promise<Unit> => {
-    const result = await localforage.setItem('unit', unit);
+    const result = await localforage.setItem("unit", unit);
     return result;
 }
 
-const POSITION_ITEM_KEY = 'position';
+const POSITION_ITEM_KEY = "position";
 export type TPosition = {
     lat: number,
     lon: number
@@ -149,7 +149,7 @@ export function fixMS( { dt }: {dt: number}) {
     return dt * 1000;
 }
 
-export type TWeatherMapByDay = Map<string, Array<ThreeHourResponse['list'][0]>>;
+export type TWeatherMapByDay = Map<string, Array<ThreeHourResponse["list"][0]>>;
 
 /**
  * Get Luxon DateTime object from milliseconds
@@ -190,7 +190,7 @@ type TCurrentQuery = {
  * @returns {T5DayQuery}
  */
 export const fiveDaysWeatherMapQuery = ({ unit, position } : TWeatherQueries): T5DayQuery => ({
-    queryKey: ['fiveDaysWeather', unit, position.lat.toString() + position.lon.toString()],  
+    queryKey: ["fiveDaysWeather", unit, position.lat.toString() + position.lon.toString()],  
     queryFn: async () => get5DaysWeatherMap({ unit, position }),  
 })
 
@@ -204,7 +204,7 @@ export const fiveDaysWeatherMapQuery = ({ unit, position } : TWeatherQueries): T
  * @returns {T5DayQuery}
  */
 export const currenWeatherMapQuery = ({ unit, position } : TWeatherQueries): TCurrentQuery => ({
-    queryKey: ['currentWeather', unit, position.lat.toString() + position.lon.toString()],  
+    queryKey: ["currentWeather", unit, position.lat.toString() + position.lon.toString()],  
     queryFn: async () => getCurrentWeatherMap({ unit, position }),  
 })
 
@@ -258,11 +258,11 @@ export async function get5DaysWeatherMap({ unit, position } : TWeatherQueries){
  * @param {TPosition} properties.position
  * @returns {TWeatherMapByDay}
  */
-function groupWeatherByDay(list: ThreeHourResponse['list']): TWeatherMapByDay {
+function groupWeatherByDay(list: ThreeHourResponse["list"]): TWeatherMapByDay {
     
     const days = new Map(); //use Map as need we to maintain insertion order
     list.forEach( (w) => {
-        const day = getDateTime({ dt: w.dt }).toFormat('dd/MM/yyyy');
+        const day = getDateTime({ dt: w.dt }).toFormat("dd/MM/yyyy");
         if( !days.get(day) ) {
             
             days.set(day, []);

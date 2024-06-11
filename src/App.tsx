@@ -5,7 +5,7 @@ import React, {useEffect } from "react";
 import { Unit } from "openweathermap-ts/dist/types";
 import { useRevalidator, defer, Await } from "react-router-dom";
 import Footer from "@components/organisms/Footer";
-import './App.scss';
+import "./App.scss";
 import { GlobalContextProvider } from "@contexts/GlobalContextProvider";
 import LoadingAnimation from "@components/atoms/LoadingAnimation";
 
@@ -22,7 +22,7 @@ type TLoader = {
  */
 export async function loader() {
   if(!isUserLocationSupported()) {
-    throw new Error('Your device do not support geolocation');
+    throw new Error("Your device do not support geolocation");
   }
 
   

@@ -1,12 +1,12 @@
-import { CurrentResponse, Unit } from 'openweathermap-ts/dist/types';
-import { TPosition } from '@utilities/common';
+import { CurrentResponse, Unit } from "openweathermap-ts/dist/types";
+import { TPosition } from "@utilities/common";
 import { 
     createContext,
     useState,
     useEffect,
     SetStateAction
-} from 'react';
-import { TIconData } from '@components/atoms/WeatherIcon';
+} from "react";
+import { TIconData } from "@components/atoms/WeatherIcon";
 
 export type TGlobalContextPosition = TPosition | null;
 

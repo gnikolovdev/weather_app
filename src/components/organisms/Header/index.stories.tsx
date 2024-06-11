@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import Header from './index';
+import Header from "./index";
 
 const meta = {
     title: "weather app/organisms/Header",
     component: Header,
-    tags: ['autodocs'],
+    tags: ["autodocs"],
 } satisfies Meta<typeof Header>;
 
 export default meta;

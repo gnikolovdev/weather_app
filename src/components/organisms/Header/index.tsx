@@ -1,6 +1,6 @@
 import { TGlobalContext, GlobalContext } from "@contexts/GlobalContextProvider";
 import React, { useContext } from "react";
-import './index.scss';
+import "./index.scss";
 import { Link } from "react-router-dom";
 import UnitSwitcher from "@components/molecules/UnitSwitcher";
 import WeatherIcon from "@components/atoms/WeatherIcon";
@@ -28,7 +28,7 @@ export default function Header({
       <>
         <header className="header">
           <div className="header__content">
-            <Link to={'/'}><h1 className="header__title">Weather app</h1></Link>
+            <Link to={"/"}><h1 className="header__title">Weather app</h1></Link>
             {currentWeather && <WeatherIcon data={currentWeather}/>}
             <UnitSwitcher unit={unit} />
           </div>        
