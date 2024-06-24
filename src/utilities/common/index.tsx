@@ -209,6 +209,16 @@ export const currenWeatherMapQuery = ({ unit, position } : TWeatherQueries): TCu
 })
 
 
+type TLocationQuery = {
+    queryKey: string[],
+    queryFn: () => Promise<unknown>
+}
+
+export const getLocationByCityQuery = ({ cityName }: {cityName: string}): TLocationQuery => ({
+    queryKey: ["cityByName", cityName],  
+    queryFn: async () => getLocationByCity({ cityName }),  
+})
+
 /**
  * 
  * returns data for current day forecast
@@ -245,6 +255,22 @@ export async function get5DaysWeatherMap({ unit, position } : TWeatherQueries){
         return groupWeatherByDay(weatherData.list);
     } catch (e: any) {
         throw new Error("Days fetch failed: " + e.message);
+    }
+}
+
+
+type TLocationByCity = {
+    cityName: string
+}
+export async function getLocationByCity({ cityName } : TLocationByCity) {
+    try {
+        const locationData = await openWeatherAPI.getByCityName({ location: { cityName: cityName },
+            queryType: "weather"
+         });
+
+         return locationData;
+    } catch (e : any) {
+        throw new Error("Location by city fetch failed: " + e.message);
     }
 }
 

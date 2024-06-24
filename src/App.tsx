@@ -1,6 +1,6 @@
 import Header from "@components/organisms/Header";
 import { Outlet, useLoaderData } from "react-router-dom";
-import { localDB, isUserLocationSupported, getUserLocation, TPosition, UnitValues } from "@utilities/common";
+import { localDB, isUserLocationSupported, getUserLocation, TPosition, UnitValues, getLocationByCityQuery } from "@utilities/common";
 import React, {useEffect } from "react";
 import { Unit } from "openweathermap-ts/dist/types";
 import { useRevalidator, defer, Await } from "react-router-dom";
@@ -8,6 +8,7 @@ import Footer from "@components/organisms/Footer";
 import "./App.scss";
 import { GlobalContextProvider } from "@contexts/GlobalContextProvider";
 import LoadingAnimation from "@components/atoms/LoadingAnimation";
+import { QueryClient } from "@tanstack/react-query";
 
 type TLoader = {
   position: Promise<GeolocationPosition>,
@@ -39,15 +40,35 @@ export async function loader() {
  * 
  * @returns {TLoader}
  */
-export async function action( { request } : { request : Request}) {
+export async function action( { request, queryClient } : { request : Request, queryClient: QueryClient}) {
   let formData = await request.formData();
-  let unit = formData.get("unit") as Unit;
+
+  const changeForm = formData.get("changeLocation")
+  if(changeForm) {
+
+    const cityName = formData.get("cityName") as string;
+    const query = getLocationByCityQuery({ cityName });
+    let cityPos;
+    
+    cityPos = await queryClient.fetchQuery(query);
   
-  if ((Object.values(UnitValues) as string[]).includes(unit)) {
-    localDB.setUnit(unit);
+    if(cityPos.cod !== 200) {
+      alert(cityPos.message);
+    } else {
+      const positionParam = {lat: cityPos.coord.lat, lon: cityPos.coord.lon};
+      await localDB.setPosition({position: positionParam});
+    }
+    
   } else {
-    throw new Error(`Unit is not supported: ${unit}`)
+    let unit = formData.get("unit") as Unit;
+    
+    if ((Object.values(UnitValues) as string[]).includes(unit)) {
+      localDB.setUnit(unit);
+    } else {
+      throw new Error(`Unit is not supported: ${unit}`)
+    }
   }
+
   
   return {ok: true};
 }
@@ -124,7 +145,9 @@ export default function App() {
       <GlobalContextProvider unit={unit} position={positionCached}>
         <Header></Header>
           {positionCached === null && <AwaitPositionData position={position} />}
-          {positionCached !== null && <Outlet />}
+          {positionCached !== null && 
+            <Outlet />
+          }
         <Footer />
       </GlobalContextProvider>      
     );

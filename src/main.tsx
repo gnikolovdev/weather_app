@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     loader: AppLoader,
-    action: AppAction,
+    action: ({request }) => { return AppAction( { request, queryClient }); },
     errorElement: <ErrorPage />,
     children: [
       {
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/day/:dayId",
-        action: AppAction,
+        action: ({request }) => { return AppAction( { request, queryClient }); },
         loader: () => { return forecastByDaysLoader( { queryClient }); },
         element: <ForecastByHours />,
       },

@@ -6,7 +6,6 @@ import UnitSwitcher from "@components/molecules/UnitSwitcher";
 import WeatherIcon from "@components/atoms/WeatherIcon";
 
 type TheaderProps = {
-  children: React.ReactNode
 }
 
 function HeaderRelativePlaceholder() {

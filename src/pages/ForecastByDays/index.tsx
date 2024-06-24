@@ -6,7 +6,6 @@ import {
     fiveDaysWeatherMapQuery,
     currenWeatherMapQuery,
     localDB,
-    fixMS,
     getDateTime
 } from "@utilities/common";
 import { QueryClient } from "@tanstack/react-query";
@@ -16,6 +15,7 @@ import DayCard from "@components/molecules/DayCard";
 import { CurrentResponse } from "openweathermap-ts/dist/types";
 import { DateTime } from "luxon";
 import { GlobalContext, TGlobalContext } from "@contexts/GlobalContextProvider";
+import LocationInput from "@components/molecules/LocationInput";
 
 export type TDataLoader = {
     haveData: boolean,
@@ -143,6 +143,9 @@ export default function ForecastByDays() {
     
     return (
         <div className="forecast5">
+            
+            <LocationInput />
+            
             <h2 className="forecast5__title">
                 Forecast by days:
             </h2>
